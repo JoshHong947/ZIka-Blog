@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zika-Site</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        table {
+            width: 70%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f6c2ed;
+        }
+        
+        body {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800"%3E%3Cpath fill="#ffffff" fill-opacity="0.4" d="M0,320L30,320C60,320,120,320,180,282.7C240,245,300,171,360,183.3C420,192,480,224,540,240C600,256,660,256,720,229.3C780,203,840,171,900,149.3C960,128,1020,128,1080,149.3C1140,171,1200,171,1260,181.3C1320,192,1380,160,1410,160L1440,160L1440,0L1440,0Z"/%3E%3C/svg%3E');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body class="py-16 md:py-24 overflow-x-clip bg-white"style="margin: auto;">
+
+    <header class="h-16 bg-gray-800 flex text-gray-300 px-10 items-center" style="position: fixed; top: 0; width: 100%;">
+        <a href="" class="mr-5">
+            <img src="logo.png" class="h-8" alt="logo" />
+        <nav class="flex items-center">
+            <a href="" class="px-5 py-4 mx-1 rounded-lg hover:bg-black">特点</a>
+            <a href="" class="px-5 py-4 mx-1 rounded-lg hover:bg-black">资源</a>
+            <a href="" class="px-5 py-4 mx-1 rounded-lg hover:bg-black">定价</a>
+            <a href="" class="px-5 py-4 mx-1 rounded-lg hover:bg-black">使用</a>
+        </nav>
+        <div class="ml-auto relative flex items-center">
+            <img src="1.jpg" alt="avatar" class="rounded-full h-9 w-9 mr-2" />
+            <div class="absolute right-0 mt-8 bg-white text-gray-700 text-sm top-4 w-48 shadow-lg ring-1 ring-black ring-opacity-5 py-2 rounded-md">
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100">资料</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100">设置</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100">退出</a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="absolute top-0 z-[-2] h-screen w-screen rotate-180 transform bg-white bg-[radial-gradient(60%_120%_at_50%_50%,hsla(0,0%,100%,0)_0,rgba(252,205,238,.5)_100%)]"></div>
+    
+    <h2 style="text-align: center;font-size: 3em;">Data Table</h2>
+    <table id="dataTable"style="margin: auto;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th style="width: 200px;">Name</th>
+                <th>URL</th>
+                <th>JS Selectors</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here -->
+        </tbody>
+        
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dataPath = 'models.json'; // 使用相对路径
+
+            async function loadJSON(path) {
+                try {
+                    const response = await fetch(path);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Error loading JSON:', error);
+                }
+            }
+
+            function displayTable(data) {
+                const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+                data.forEach(item => {
+                    const row = tableBody.insertRow();
+                    const cell1 = row.insertCell(0);
+                    const cell2 = row.insertCell(1);
+                    const cell3 = row.insertCell(2);
+                    const cell4 = row.insertCell(3);
+
+                    cell1.textContent = item.id;
+                    cell2.textContent = item.name;
+                    cell3.innerHTML = `<a href="${item.url}" target="_blank">${item.url}</a>`;
+                    cell4.textContent = item.jsSelect.join(', ');
+                });
+            }
+
+
+        });
+
+        let jsonData = []; // 存储加载的JSON数据
+
+        function displayData() {
+            const index = parseInt(document.getElementById('indexInput').value);
+            if (isNaN(index) || index < 0 || index >= jsonData.length) {
+                document.getElementById('dataContainer').innerHTML = '请输入有效的索引号！';
+            } else {
+                const data = jsonData[index];
+                document.getElementById('dataContainer').innerHTML = JSON.stringify(data, null, 2);
+            }
+        }
+
+        fetch("./models.json").then((response) => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json(); // 解析JSON数据
+        })
+        .then((data) => {
+            console.log("data", data);
+            jsonData = data; // 处理JSON数据
+        })
+        .catch((error) => {
+            console.error("There was a problem with the fetch operation:", error);
+        });
+
+        
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dataPath = 'models.json'; // 使用相对路径
+
+            async function loadJSON(path) {
+                try {
+                    const response = await fetch(path);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Error loading JSON:', error);
+                }
+            }
+
+            function displayTable(data) {
+                const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+                data.forEach(item => {
+                    const row = tableBody.insertRow();
+                    const cell1 = row.insertCell(0);
+                    const cell2 = row.insertCell(1);
+                    const cell3 = row.insertCell(2);
+                    const cell4 = row.insertCell(3);
+
+                    cell1.textContent = item.id;
+                    cell2.textContent = item.name;
+                    cell3.innerHTML = `<a href="${item.url}" target="_blank">${item.url}</a>`;
+                    cell4.textContent = item.jsSelect.join(', ');
+                });
+            }
+
+            loadJSON(dataPath).then(data => {
+                if (data) {
+                    displayTable(data);
+                }
+            });
+        });
+    </script>
+
+    <main class="p-9"style="text-align: center;font-size: 2em;">
+        <br><br>
+        输入索引号: <input type="number" id="indexInput" >
+        <button onclick="displayData()">显示数据</button>
+        <div id="dataContainer" style="width: 100%; border-collapse: collapse; white-space: pre-wrap; margin-top: 20px;"></div>
+    </main>
+
+</body>
+</html>
+
+
