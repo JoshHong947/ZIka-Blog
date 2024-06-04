@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple URL Generator</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Multiple URL Generator</h1>
+    <label for="page_url">Page URL:</label>
+    <input type="text" id="page_url" name="page_url" placeholder="Enter page_url">
+    <button onclick="generateURLs()">Generate URLs</button>
+
+    <div id="lang_table"></div>
+    <div id="section_table"></div>
+
+    <script>
+        const baseURL = 'https://woy.ai/manage/p/';
+        const languages = ['en', 'tw', 'ko', 'ja', 'pt', 'es', 'zh', 'fr', 'vi', 'ar', 'nl', 'pl', 'de'];
+        const sections = [
+            'introduction', 'features', 'faq', 'pricing', 'tutorial', 'technical-details', 'update-and-maintenance',
+            'team-introduction', 'support-and-service', 'compatibility-and-integration', 'user-evaluation-and-use-cases',
+            'maker-review', 'extension', 'api', 'privacy-policy', 'application-scene', 'user-agreement', 'special-thanks'
+        ];
+
+        function generateURLs() {
+            const pageURL = document.getElementById('page_url').value;
+            if (!pageURL) {
+                alert('Please enter a page_url');
+                return;
+            }
+
+            const langTable = document.getElementById('lang_table');
+            const sectionTable = document.getElementById('section_table');
+
+            langTable.innerHTML = '<table><thead><tr><th>Language</th></tr></thead><tbody></tbody><tfoot><tr><td><button onclick="openAllLangURLs()">Open All Languages</button></td></tr></tfoot></table>';
+            sectionTable.innerHTML = '<table><thead><tr><th>Language/Section</th>' + sections.map(section => `<th>${section}</th>`).join('') + '</tr></thead><tbody></tbody><tfoot><tr><td>Open All for:</td>' + sections.map(section => `<td><button onclick="openAllLangForSection('${section}')">Open ${section}</button></td>`).join('') + '</tr></tfoot></table>';
+
+            const langTableBody = langTable.querySelector('tbody');
+            const sectionTableBody = sectionTable.querySelector('tbody');
+
+            languages.forEach(lang => {
+                const langRow = document.createElement('tr');
+                langRow.innerHTML = `<td><a href="${baseURL}${pageURL}/${lang}" target="_blank">${lang}</a></td>`;
+                langTableBody.appendChild(langRow);
+            });
+
+            languages.forEach(lang => {
+                const sectionRow = document.createElement('tr');
+                sectionRow.innerHTML = `<td>${lang}</td>` + sections.map(section => `<td><a href="${baseURL}${pageURL}/${lang}/${section}" target="_blank">${section}</a></td>`).join('');
+                sectionTableBody.appendChild(sectionRow);
+            });
+        }
+
+        function openAllLangURLs() {
+            const pageURL = document.getElementById('page_url').value;
+            languages.forEach(lang => {
+                const url = `${baseURL}${pageURL}/${lang}`;
+                window.open(url, '_blank');
+            });
+        }
+
+        function openAllLangForSection(section) {
+            const pageURL = document.getElementById('page_url').value;
+            languages.forEach(lang => {
+                const url = `${baseURL}${pageURL}/${lang}/${section}`;
+                window.open(url, '_blank');
+            });
+        }
+    </script>
+</body>
+</html>
