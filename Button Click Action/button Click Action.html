@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Click</title>
+</head>
+<body>
+    <button id="clickButton">Click me</button>
+
+    <script>
+        document.getElementById("clickButton").addEventListener("click", function() {
+            var newWindow = window.open('https://woy.ai/manage/p/ApiPrivacy/pl/introduction');
+            newWindow.onload = function() {
+                newWindow.document.querySelector(document.querySelector("body > div.pt-4.my-auto.min-h-\\[90vh\\].pb-36.bg-white > div.block.overflow-hidden > div.flex.flex-row.justify-start.items-start > div > div.mt-2.flex.justify-start.items-center > button.mx-auto.flex.justify-center.items-center.rounded-md.bg-amber-500.px-3.py-2.text-lg.font-semibold.text-white.shadow-sm")).click();
+            };
+        });
+    </script>
+</body>
+</html>

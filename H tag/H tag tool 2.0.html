@@ -120,23 +120,42 @@
                 h5: (input.match(/^\s*#####\s/gm) || []).length,
                 h6: (input.match(/^\s*######\s/gm) || []).length
             };
-            document.getElementById('countOutput').textContent = 
+            document.getElementById('countOutput').textContent =
                 `H1: ${counts.h1}\nH2: ${counts.h2}\nH3: ${counts.h3}\nH4: ${counts.h4}\nH5: ${counts.h5}\nH6: ${counts.h6}`;
 
-            let warnings = [];
-            if (counts.h2 > 0) warnings.push("警告：存在 H2 标签！");
-            if (counts.h6 > 0) warnings.push("警告：存在 H6 标签！");
-            if (counts.h1 > 0) warnings.push("警告：存在 H1 标签！");
-            if (counts.h3 > 0) warnings.push("hhhh可以考虑复制了！");
-            if (counts.h2 === 1 || counts.h3 === 1 || counts.h4 === 1) {
-                 warnings.push("考虑删除第一行");
-    }    
-           let garbledChars = input.match(/[\uFFFD\uFFFC\uFFFF\u2022\u2026\u2027\uFEFF\u200B-\u200D]/g);
-            if (garbledChars && garbledChars.length > 0) {
-                warnings.push("警告：存在乱码符号！");
+            // 移除 H1 标签
+            if (counts.h1 > 0) {
+                input = input.replace(/^\s*#\s.*/gm, '');
             }
-            
-            document.getElementById('warningOutput').textContent = warnings.join("\n");
+
+            // 处理 H2 标签
+            if (counts.h2 === 1) {
+                input = input.replace(/^\s*##\s.*/gm, '');
+            } else if (counts.h2 > 1) {
+                input = input.replace(/^\s*(##)\s/gm, '### ');
+            }
+
+            // 处理 H4 标签
+            if (counts.h4 > 0 && counts.h1 === 0 && counts.h2 === 0 && counts.h3 === 0) {
+                input = input.replace(/^\s*(####)\s/gm, '### ');
+            }
+
+            // 删除第一行标题
+            if (counts.h2 === 1 || counts.h3 === 1 || counts.h4 === 1) {
+                let lines = input.split('\n');
+                if (lines.length > 1) {
+                    lines.shift();
+                    input = lines.join('\n');
+                }
+            }
+
+            let garbledChars = input.match(/[\uFFFD\uFFFC\uFFFF\u2022\u2026\u2027\uFEFF\u200B-\u200D]/g);
+            if (garbledChars && garbledChars.length > 0) {
+                input = input.replace(/[\uFFFD\uFFFC\uFFFF\u2022\u2026\u2027\uFEFF\u200B-\u200D]/g, '');
+            }
+
+            document.getElementById('inputText').value = input;
+            updateOutput();
         }
 
         function updateOutput() {
