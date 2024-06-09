@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>H 标签处理工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin-right: 10px;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        #inputText {
+            width: 70%;
+            height: 200px;
+            margin-bottom: 20px;
+            vertical-align: top;
+        }
+        #output {
+            padding: 20px;
+            background-color: hsl(0, 0%, 100%);
+            border: 1px solid #f9c986;
+            white-space: pre-wrap;
+            bottom: 5px;
+        }
+        button {
+            font-size: 25px;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: hsl(0, 0%, 100%);
+            color: hsl(0, 0%, 100%);
+        }
+        pre {
+            background-color: #dd7c7c;
+            border: 1px solid #c96b6b;
+            padding: 5px;
+            margin-left: 1px;
+            white-space: pre-wrap;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            display: inline-block;
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+    <h1>H 标签处理工具</h1>
+    <div class="container">
+        <textarea id="inputText" placeholder="在此输入内容..." oninput="updateOutput()"></textarea>
+        <pre id="countOutput"></pre>
+        <pre id="warningOutput" style="color: rgb(68, 66, 220);"></pre>
+    </div>
+    <button onclick="processInput()">修正格式</button>
+    <button onclick="copyToClipboard()">复制</button>
+    <br>
+    <pre id="output"></pre>
+
+    <script>
+        function escapeHtml(unsafe) {
+            return unsafe.replace(/[&<"'>]/g, function (match) {
+                switch (match) {
+                    case '&':
+                        return '&amp;';
+                    case '<':
+                        return '&lt;';
+                    case '>':
+                        return '&gt;';
+                    case '"':
+                        return '&quot;';
+                    case "'":
+                        return '&#039;';
+                }
+            });
+        }
+
+        function replaceGarbled(input) {
+            return input.replace(/[\uFFFD\uFFFC\uFFFF\u2022\u2026\u2027\uFEFF\u200B-\u200D]/g, '');
+        }
+
+        function countTags(input) {
+            return {
+                h1: (input.match(/^\s*#\s/gm) || []).length,
+                h2: (input.match(/^\s*##\s/gm) || []).length,
+                h3: (input.match(/^\s*###\s/gm) || []).length,
+                h4: (input.match(/^\s*####\s/gm) || []).length,
+                h5: (input.match(/^\s*#####\s/gm) || []).length,
+                h6: (input.match(/^\s*######\s/gm) || []).length
+            };
+        }
+
+        function displayTagCount(input) {
+            let counts = countTags(input);
+            let output = `# 标签数量: ${counts.h1}\n## 标签数量: ${counts.h2}\n### 标签数量: ${counts.h3}\n#### 标签数量: ${counts.h4}\n##### 标签数量: ${counts.h5}\n###### 标签数量: ${counts.h6}`;
+            document.getElementById('countOutput').textContent = output;
+        }
+
+        function updateOutput() {
+            let input = document.getElementById('inputText').value;
+            document.getElementById('output').textContent = escapeHtml(input);
+            displayTagCount(input);
+        }
+
+        function processInput() {
+            let input = document.getElementById('inputText').value;
+            input = replaceGarbled(input);
+
+            // 检查是否是标题
+            // 如果不是，则删除第一行
+            let counts = countTags(input);
+            if (counts.h1 === 1 || counts.h2 === 1 || counts.h3 === 1) {
+                input = deleteFirstLine(input);
+            }
+
+            counts = countTags(input);
+            if (counts.h4 > 1 && counts.h1 === 0 && counts.h2 === 0 && counts.h3 === 0) {
+                input = downgradeTags(input);
+            }
+
+            // Update counts after each modification
+            counts = countTags(input);
+            if (counts.h2 > 0 && counts.h1 === 0 && counts.h4 === 0) {
+                input = upgradeTags(input);
+            }
+
+            document.getElementById('inputText').value = input;
+            updateOutput();
+        }
+
+        function upgradeTags(input) {
+            return input.replace(/(#+)/g, function (match) {
+                return match.length < 6 ? '#'.repeat(match.length + 1) : match;
+            });
+        }
+
+        function downgradeTags(input) {
+            return input.replace(/(#+)/g, function (match) {
+                return match.length > 1 ? '#'.repeat(match.length - 1) : match;
+            });
+        }
+
+        function deleteFirstLine(input) {
+            let lines = input.split('\n');
+            if (lines.length > 1) {
+                lines.shift();
+                return lines.join('\n');
+            }
+            return input;
+        }
+
+        function copyToClipboard() {
+            let output = document.getElementById('output');
+            let range = document.createRange();
+            range.selectNodeContents(output);
+            let selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                alert('复制失败，请手动复制。');
+            }
+            selection.removeAllRanges();
+
+            document.getElementById('inputText').value = '';
+            document.getElementById('output').textContent = '';
+            document.getElementById('countOutput').textContent = '';
+            document.getElementById('warningOutput').textContent = '';
+        }
+    </script>
+</body>
+</html>
+
+</html>
