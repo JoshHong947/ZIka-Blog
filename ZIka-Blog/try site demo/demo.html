@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>莫大哥是我男神！</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="loadData()">小弟正加载数据</button>
+    <br><br>
+    大哥输入索引号：<input type="number" id="indexInput" />
+    <button onclick="displayData()">小的显示数据</button>
+    <div id="dataContainer" style="white-space: pre-wrap; margin-top: 20px;"></div>
+    <script>
+        let jsonData = []; // 存储加载的JSON数据
+
+        function displayData() {
+            const index = parseInt(document.getElementById('indexInput').value);
+            if (isNaN(index) || index < 0 || index >= jsonData.length) {
+                document.getElementById('dataContainer').innerHTML = '请输入有效的索引号！';
+            } else {
+                const data = jsonData[index];
+                document.getElementById('dataContainer').innerHTML = JSON.stringify(data, null, 2);
+            }
+            
+        }
+
+        import data from "./Users/meraki/111/models.json"
+
+        fetch("./models.json").then((response) => {
+          // 确保请求成功
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json(); // 解析JSON数据
+        })
+        .then((data) => {
+          console.log("data", data);
+          // 处理JSON数据
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const dataPath = 'models.json'; // 使用相对路径
+
+            async function loadJSON(path) {
+                const response = await fetch(path);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const data = await response.json();
+                return data;
+            }
+
+            function displayTable(data) {
+                const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+                data.forEach(item => {
+                    const row = tableBody.insertRow();
+                    const cell1 = row.insertCell(0);
+                    const cell2 = row.insertCell(1);
+                    const cell3 = row.insertCell(2);
+                    const cell4 = row.insertCell(3);
+
+                    cell1.textContent = item.id;
+                    cell2.textContent = item.name;
+                    cell3.innerHTML = `<a href="${item.url}" target="_blank">${item.url}</a>`;
+                    cell4.textContent = item.jsSelect.join(', ');
+                });
+            }
+
+            loadJSON(dataPath).then(data => {
+                displayTable(data);
+            }).catch(error => {
+                console.error('Error loading JSON:', error);
+            });
+        });
+    </script>
+</body>
+</html>

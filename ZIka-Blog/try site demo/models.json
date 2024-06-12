@@ -1,0 +1,100 @@
+[
+  {
+    "id": 1,
+    "name": "海螺",
+    "url": "https://hailuoai.com",
+    "jsSelect": [
+      "#chat-input",
+      "#input-send-icon >div"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "devv",
+    "url": "https://devv.ai/zh",
+    "jsSelect": [
+      "#react-aria-\\:R5mmkddda\\:",
+      "body > div > div > div.flex.flex-col.flex-initial.relative.overflow-auto.flex-grow.dark\\:bg-dark-background > main > div.flex-grow.flex.flex-col.items-center.gap-4.justify-center.min-h-\\[656px\\] > div.relative.w-full.flex.flex-col.justify-center.items-center.gap-4 > div.group.flex.flex-col.w-full.max-w-\\[800px\\].search-box.is-filled > div > div > div > div.flex.items-center.gap-1 > button:nth-child(2)",
+      "#scroll-root > div > div > div.fixed.bottom-5.flex.items-center.z-20 > div > div > div",
+      "#scroll-root > div > div > div.fixed.bottom-5.flex.items-center.z-20 > div > div > div > div > button"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "thinkany",
+    "url": "https://thinkany.so/zh",
+    "jsSelect": [
+      "body > div > div > div.h-full.flex-1.overflow-hidden > div > div > div.mt-8.w-full.relative > textarea",
+      "body > div > div > div.h-full.flex-1.overflow-hidden > div > div > div.mt-8.w-full.relative > div.absolute.right-4.bottom-4.cursor-pointer.text-primary.font-bold",
+      "body > div > div > div.h-full.flex-1.overflow-hidden > div > div > div > div.flex-1.max-w-3xl.mx-auto.overflow-hidden.flex.flex-col.gap-y-6.px-4 > div.flex-1 > div.fixed.bottom-0.left-0.right-0.w-full > div > div.flex-1.bg-base-100.pt-4.pb-8 > div > div.flex-1.max-w-3xl.mx-auto.px-4 > div > input",
+      "body > div > div > div.h-full.flex-1.overflow-hidden > div > div > div > div.flex-1.max-w-3xl.mx-auto.overflow-hidden.flex.flex-col.gap-y-6.px-4 > div.flex-1 > div.fixed.bottom-0.left-0.right-0.w-full > div > div.flex-1.bg-base-100.pt-4.pb-8 > div > div.flex-1.max-w-3xl.mx-auto.px-4 > div > div"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "百川大模型",
+    "url": "https://www.baichuan-ai.com/chat",
+    "jsSelect": [
+      "#__next > main > div > div > div.relative.w-full > div> div > textarea",
+      "#__next > main > div > div > div.relative.w-full > div > div > div > div.tooltips-user-chatpdf-file.send-btn.group.relative.flex.h-8.w-8.flex-shrink-0.items-center.justify-center.text-sm.text-white.transition-colors.duration-200.cursor-pointer"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "360AI搜索",
+    "url": "https://www.sou.com",
+    "jsSelect": [
+      "#input_content > div > div.flex > div.input-layout.flex.items-center.gap-16px.w-full.min-w-520px.pl-22px.pr-16px.border-2px.border-r-w-0.border-\\[rgba\\(0\\,0\\,0\\,0\\.2\\)\\].hover\\:border-\\[rgba\\(0\\,0\\,0\\,0\\.3\\)\\].rounded-l-24px > #composition-input",
+      "#input_content > div > div.flex > div.flex.justify-center.items-center.flex-shrink-0.z-100.w-104px.h-48px.bg-\\[\\#FFB546\\].font-bold.text-16px.rounded-r-24px.cursor-pointer",
+      "#composition-input",
+      "#input_top > div > div.flex > div.flex.justify-center.items-center.flex-shrink-0.z-100.w-104px.h-48px.bg-\\[\\#FFB546\\].font-bold.text-16px.rounded-r-24px.cursor-pointer.\\!h-40px"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "博查",
+    "url": "https://bochaai.com",
+    "jsSelect": [
+      "body > main > div > div.flex.flex-col.w-full > form > div > textarea",
+      "body > main > div > div.flex.flex-col.w-full > form > div > div > div.flex.items-center.gap-4 > div",
+      "body > main > div.fixed.bottom-0.bg-gradient-light.z-50.w-full > div > div > form > div > div > div > textarea",
+      "body > main > div.fixed.bottom-0.bg-gradient-light.z-50.w-full > div > div > form > div > div > div > div > div > div"
+    ]
+  },
+  {
+    "id":7,
+    "name":"智谱清言",
+    "url":"https://chatglm.cn/main/alltoolsdetail",
+    "jsSelect":[
+      "#search-input-box > div > div.input-box-inner > textarea",
+      "#search-input-box > div > div.enter > img"
+    ]
+  },
+  {
+    "id":8,
+    "name":"文心一言",
+    "url":"https://yiyan.baidu.com",
+    "jsSelect":[
+      "#eb_model_footer > div.oeNDrlEA > div:nth-child(3) > div > div:nth-child(1) > div.JRWXI4iU > div > div > div",
+      "#eb_model_footer > div.oeNDrlEA > div:nth-child(3) > div > div:nth-child(3) > span"
+    ]
+  },
+  {
+    "id":9,
+    "name":"豆包",
+    "url":"https://www.doubao.com",
+    "jsSelect":[
+      "#flow-end-msg-input > div > textarea",
+      "#flow-end-msg-send"
+    ]
+  },
+  {
+    "id":10,
+    "name":"Wegic",
+    "url":"https://wegic.ai/app",
+    "jsSelect":[
+      "#root > div > div._app_1cdpt_14.light-scrollbar > div:nth-child(2) > div > div:nth-child(3) > div > div._chatbox_pwtsw_26 > div._chat-input-bar_15p76_14.light-scrollbar-wrapper > div._inputContainer_1j351_14 > div > div._editorInput_1rw3n_14._input_1j351_14 > div",
+      "#root > div > div._app_1cdpt_14.light-scrollbar > div:nth-child(2) > div > div:nth-child(3) > div > div._chatbox_pwtsw_26 > div._chat-input-bar_15p76_14.light-scrollbar-wrapper > div._send-btn-container_15p76_34 > button"
+    ]
+  }
+]

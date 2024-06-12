@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网址显示器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>网站显示器</h1>
+        <input type="text" id="urlInput" placeholder="输入网址...">
+        <button onclick="showWebsite()">显示网站</button>
+        <iframe id="websiteFrame" src=""></iframe>
+    </div>
+    <script>
+        function showWebsite() {
+            var url = document.getElementById("urlInput").value;
+            if (url) {
+                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                    url = "http://" + url;
+                }
+                // 设置iframe的user-agent为桌面浏览器
+                var iframe = document.getElementById("websiteFrame");
+                var desktopUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
+                iframe.src = "about:blank"; // 先设置为空页面
+                iframe.onload = function() {
+                    var doc = iframe.contentDocument || iframe.contentWindow.document;
+                    var script = doc.createElement("script");
+                    script.type = "text/javascript";
+                    script.text = 'navigator.__defineGetter__("userAgent", function(){ return "' + desktopUserAgent + '"; });';
+                    doc.head.appendChild(script);
+                    iframe.src = url; // 重新设置为目标URL
+                };
+            } else {
+                alert("请输入一个有效的网址");
+            }
+        }
+    </script>
+</body>
+</html>

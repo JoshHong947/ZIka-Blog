@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>H 标签处理工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin-right: 10px;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between; /* 使内容两端对齐 */
+        }
+        #inputText {
+            width: 70%;
+            height: 200px;
+            margin-bottom: 20px;
+            vertical-align: top; /* 垂直对齐 */
+        }
+        #output {
+            padding: 20px;
+            background-color: hsl(0, 0%, 100%);
+            border: 1px solid #f9c986;
+            white-space: pre-wrap; /* 保留空格和换行 */
+            bottom: 5px;
+        }
+        button {
+            font-size: 25px; /* 你可以根据需要调整这里的数值 */
+            padding: 15px 20px; /* 增加内边距也会使按钮看起来更大 */
+            border: none; /* 移除边框 */
+            cursor: pointer; /* 改变鼠标悬停时的光标样式 */
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: hsl(0, 0%, 100%); /* 鼠标悬停时的背景颜色 */
+            color: hsl(0, 0%, 100%); /* 鼠标悬停时的文字颜色 */
+        }
+        pre {
+            background-color: #dd7c7c; /* 背景颜色 */
+            border: 1px solid #c96b6b; /* 边框 */
+            padding: 5px; /* 内边距 */
+            margin-left: 1px; /* 外边距 */
+            white-space: pre-wrap; /* 保留空格，并且换行 */
+            font-family: Arial, sans-serif; /* 字体 */
+            font-size: 14px; /* 字体大小 */
+            line-height: 1.6; /* 行高 */
+            display: inline-block; /* 将<pre>标签设置为内联块元素 */
+            vertical-align: top; /* 垂直对齐 */
+        }
+
+    </style>
+</head>
+<body>
+    <h1>H 标签处理工具</h1>
+    <div class="container">
+        <textarea id="inputText" placeholder="在此输入内容..." oninput="updateOutput()"></textarea>
+        <pre id="countOutput"></pre>
+        <pre id="warningOutput" style="color: rgb(68, 66, 220);"></pre>
+    </div>
+    <button onclick="deleteFirstLine()">删除第一行</button>
+    <button onclick="upgradeTags()">降级 H 标签</button>
+    <button onclick="downgradeTags()">升级 H 标签</button>
+    <button onclick="replaceGarbled()">替换乱码</button>
+    <button onclick="copyToClipboard()">复制</button>
+    <br>
+    <pre id="output"></pre>
+
+    <script>
+        function escapeHtml(unsafe) {
+            return unsafe.replace(/[&<"'>]/g, function (match) {
+                switch (match) {
+                    case '&':
+                        return '&amp;';
+                    case '<':
+                        return '&lt;';
+                    case '>':
+                        return '&gt;';
+                    case '"':
+                        return '&quot;';
+                    case "'":
+                        return '&#039;';
+                }
+            });
+        }
+
+        function upgradeTags() {
+            let input = document.getElementById('inputText').value;
+            let upgraded = input.replace(/(#+)/g, function (match) {
+                return match.length < 6 ? '#'.repeat(match.length + 1) : match;
+            });
+            document.getElementById('inputText').value = upgraded;
+            updateOutput();
+        }
+
+        function downgradeTags() {
+            let input = document.getElementById('inputText').value;
+            let downgraded = input.replace(/(#+)/g, function (match) {
+                return match.length > 1 ? '#'.repeat(match.length - 1) : match;
+            });
+            document.getElementById('inputText').value = downgraded;
+            updateOutput();
+        }
+
+        function replaceGarbled() {
+            let input = document.getElementById('inputText').value;
+            let replaced = input.replace(/[\uFFFD\uFFFC\uFFFF\u2022\u2026\u2027\uFEFF\u200B-\u200D]/g, '');
+            document.getElementById('inputText').value = replaced;
+            updateOutput();
+        }
+
+        function countTags(input) {
+            let counts = {
+                h1: (input.match(/^\s*#\s/gm) || []).length,
+                h2: (input.match(/^\s*##\s/gm) || []).length,
+                h3: (input.match(/^\s*###\s/gm) || []).length,
+                h4: (input.match(/^\s*####\s/gm) || []).length,
+                h5: (input.match(/^\s*#####\s/gm) || []).length,
+                h6: (input.match(/^\s*######\s/gm) || []).length
+            };
+            document.getElementById('countOutput').textContent = 
+                `H1: ${counts.h1}\nH2: ${counts.h2}\nH3: ${counts.h3}\nH4: ${counts.h4}\nH5: ${counts.h5}\nH6: ${counts.h6}`;
+
+            let warnings = [];
+            if (counts.h2 > 0) warnings.push("警告：存在 H2 标签！");
+            if (counts.h6 > 0) warnings.push("警告：存在 H6 标签！");
+            if (counts.h1 > 0) warnings.push("警告：存在 H1 标签！");
+            if (counts.h3 > 0) warnings.push("hhhh可以考虑复制了！");
+            if (counts.h2 === 1 || counts.h3 === 1 || counts.h4 === 1) {
+                 warnings.push("考虑删除第一行");
+    }    
+           let garbledChars = input.match(/[\uFFFD\uFFFC\uFFFF\u2022\u2026\u2027\uFEFF\u200B-\u200D]/g);
+            if (garbledChars && garbledChars.length > 0) {
+                warnings.push("警告：存在乱码符号！");
+            }
+            
+            document.getElementById('warningOutput').textContent = warnings.join("\n");
+        }
+
+        function updateOutput() {
+            let input = document.getElementById('inputText').value;
+            document.getElementById('output').textContent = escapeHtml(input);
+            countTags(input);
+        }
+
+        function copyToClipboard() {
+            let output = document.getElementById('output');
+            let range = document.createRange();
+            range.selectNodeContents(output);
+            let selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                alert('复制失败，请手动复制。');
+            }
+            selection.removeAllRanges();  // 清除选区
+            
+            // 清除文本框和输出框内容
+            document.getElementById('inputText').value = '';
+            document.getElementById('output').textContent = '';
+            document.getElementById('countOutput').textContent = '';
+            document.getElementById('warningOutput').textContent = '';
+        }
+
+        function deleteFirstLine() {
+            let input = document.getElementById('inputText').value;
+            let lines = input.split('\n');
+            if (lines.length > 1) {
+                lines.shift();
+                document.getElementById('inputText').value = lines.join('\n');
+                updateOutput();
+            }
+        }
+
+    </script>
+</body>
+</html>

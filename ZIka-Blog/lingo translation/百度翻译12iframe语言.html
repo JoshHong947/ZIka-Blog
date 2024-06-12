@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多语言翻译显示器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            /* max-width: 800px; */
+            margin: 0 auto;
+            text-align: center;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>多语言翻译显示器</h1>
+        <input type="text" id="textInput" placeholder="输入需要翻译的内容...">
+        <button onclick="showTranslations()">显示翻译</button>
+        <div id="framesContainer">
+            <iframe id="de" src=""></iframe>
+            <iframe id="en" src=""></iframe>
+            <iframe id="spa" src=""></iframe>
+            <iframe id="fra" src=""></iframe>
+            <iframe id="jp" src=""></iframe>
+            <iframe id="kor" src=""></iframe>
+            <iframe id="pt" src=""></iframe>
+            <iframe id="cht" src=""></iframe>
+            <iframe id="vie" src=""></iframe>
+            <iframe id="nl" src=""></iframe>
+            <iframe id="ara" src=""></iframe>
+            <iframe id="pl" src=""></iframe>
+        </div>
+    </div>
+    <script>
+        function showTranslations() {
+            var text = document.getElementById("textInput").value;
+            if (text) {
+                var languages = ["de", "en", "spa", "fra", "jp", "kor", "pt", "cht", "vie", "nl", "ara", "pl"];
+                var container = document.getElementById("framesContainer");
+                for (var i = 0; i < languages.length; i++) {
+                    var lang = languages[i];
+                    var iframe = document.getElementById(lang);
+                    iframe.src = "https://fanyi.baidu.com/#zh/" + lang + "/" + encodeURIComponent(text);
+                }
+            } else {
+                alert("请输入要翻译的内容");
+            }
+        }
+    </script>
+</body>
+</html>

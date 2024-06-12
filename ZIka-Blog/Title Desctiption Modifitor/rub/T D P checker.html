@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Info Fetcher</title>
+</head>
+<body>
+    <h1>Page Info Fetcher</h1>
+    <form id="page-form">
+        <label for="page-url">Enter Page URL Suffix (e.g., Deepshot-2-0):</label>
+        <input type="text" id="page-url" name="page-url" required>
+        <button type="submit">Fetch Info</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('page-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const pageUrlSuffix = document.getElementById('page-url').value;
+            const languages = ['', 'zh', 'de', 'pt', 'es', 'fr', 'vi', 'ar', 'nl', 'pl', 'tw', 'ko', 'ja'];
+            const baseUrl = 'https://woy.ai/';
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+
+            languages.forEach(lang => {
+                const url = `${baseUrl}${lang ? lang + '/' : ''}p/${pageUrlSuffix}`;
+                fetchPageInfo(url, lang || 'en');
+            });
+        });
+
+        function fetchPageInfo(url, lang) {
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const title = doc.querySelector('title') ? doc.querySelector('title').innerText : 'No title';
+                    const descriptionMeta = doc.querySelector('meta[name="description"]');
+                    const description = descriptionMeta ? descriptionMeta.content : 'No description';
+                    const image = doc.querySelector('img') ? doc.querySelector('img').src : 'No image';
+
+                    displayPageInfo(url, lang, title, description, image);
+                })
+                .catch(error => {
+                    displayPageInfo(url, lang, 'Error fetching page', error.message, 'No image');
+                });
+        }
+
+        function displayPageInfo(url, lang, title, description, image) {
+            const resultDiv = document.getElementById('result');
+            const pageInfo = `
+                <div>
+                    <h2>Language: ${lang}</h2>
+                    <p><strong>URL:</strong> <a href="${url}" target="_blank">${url}</a></p>
+                    <p><strong>Title:</strong> ${title}</p>
+                    <p><strong>Description:</strong> ${description}</p>
+                    <p><strong>Image:</strong> ${image !== 'No image' ? `<img src="${image}" alt="Page Image" style="max-width: 200px;">` : 'No image'}</p>
+                </div>
+                <hr>
+            `;
+            resultDiv.innerHTML += pageInfo;
+        }
+    </script>
+</body>
+</html>

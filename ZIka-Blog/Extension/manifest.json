@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "我的浏览器插件",
+  "version": "1.0",
+  "description": "这是一个示例浏览器插件",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab"
+  ]
+}
