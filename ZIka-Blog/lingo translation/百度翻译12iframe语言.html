@@ -49,7 +49,7 @@
         <button onclick="showTranslations()">显示翻译</button>
         <div id="framesContainer">
             <iframe id="de" src=""></iframe>
-            <iframe id="en" src=""></iframe>
+            <iframe id="zh" src=""></iframe>
             <iframe id="spa" src=""></iframe>
             <iframe id="fra" src=""></iframe>
             <iframe id="jp" src=""></iframe>
@@ -66,12 +66,12 @@
         function showTranslations() {
             var text = document.getElementById("textInput").value;
             if (text) {
-                var languages = ["de", "en", "spa", "fra", "jp", "kor", "pt", "cht", "vie", "nl", "ara", "pl"];
+                var languages = ["de", "zh", "spa", "fra", "jp", "kor", "pt", "cht", "vie", "nl", "ara", "pl"];
                 var container = document.getElementById("framesContainer");
                 for (var i = 0; i < languages.length; i++) {
                     var lang = languages[i];
                     var iframe = document.getElementById(lang);
-                    iframe.src = "https://fanyi.baidu.com/#zh/" + lang + "/" + encodeURIComponent(text);
+                    iframe.src = "https://fanyi.baidu.com/#en/" + lang + "/" + encodeURIComponent(text);
                 }
             } else {
                 alert("请输入要翻译的内容");

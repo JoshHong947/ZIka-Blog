@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>链接检查器</title>
+  <style>
+    .invalid-link {
+      text-decoration: line-through;
+      color: red;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>链接检查器</h1>
+  <textarea id="input" placeholder="在此输入Markdown文本..."></textarea>
+  <button onclick="checkLinks()">检查链接</button>
+  <div id="content"></div>
+
+  <script>
+    function checkLinks() {
+      const input = document.getElementById('input').value;
+      const linksRegex = /\[(?<text>.*?)\]\((?<url>.*?)\)/g;
+      const matches = [...input.matchAll(linksRegex)];
+      const content = document.getElementById('content');
+      content.innerHTML = ''; // 清空之前的内容
+
+      matches.forEach(match => {
+        const url = match.groups.url;
+        const linkText = match.groups.text;
+        const linkElement = document.createElement('a');
+        linkElement.href = url;
+        linkElement.textContent = linkText;
+
+        fetch(url, { method: 'HEAD' })
+          .then(response => {
+            if (!response.ok) {
+              linkElement.classList.add('invalid-link');
+              console.log(`无效链接: ${url}`);
+            }
+            content.appendChild(linkElement);
+          })
+          .catch(error => {
+            linkElement.classList.add('invalid-link');
+            console.log(`无效链接: ${url}`);
+            content.appendChild(linkElement);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

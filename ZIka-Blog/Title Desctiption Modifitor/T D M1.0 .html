@@ -27,6 +27,7 @@
 </head>
 <body>
     <h1>Text Formatter</h1>
+    <textarea id="inputPageName" placeholder="Enter your page name..."></textarea>
     <textarea id="inputText" placeholder="Enter your text here..."></textarea>
     <br>
     <button onclick="formatText()">Format Text</button>
@@ -36,12 +37,13 @@
     <textarea id="outputText" readonly></textarea>
 
     <script>
-            function replaceGarbled() {
+        function replaceGarbled() {
             let input = document.getElementById('inputText').value;
             let replaced = input.replace(/[\uFFFD\uFFFC\uFFFF\u2022\u2026\u2027\uFEFF\u200B-\u200D]/g, '');
             document.getElementById('inputText').value = replaced;
             updateOutput();
         }
+        
         function formatText() {
             let text = document.getElementById('inputText').value;
 

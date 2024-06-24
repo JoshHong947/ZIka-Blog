@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analysis Tool</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include other necessary libraries such as D3.js, spaCy.js, etc. -->
+</head>
+<body>
+    <h1>Text Analysis Tool</h1>
+    
+    <textarea id="inputText" rows="20" cols="100" placeholder="Paste your text here..."></textarea><br>
+    <button onclick="analyzeText()">Analyze Text</button>
+
+    <h2>Results</h2>
+    <div id="results">
+        <h3>Word Frequency Analysis</h3>
+        <div id="wordFrequency"></div>
+
+        <h3>TF-IDF</h3>
+        <div id="tfidf"></div>
+
+        <h3>Topic Modeling</h3>
+        <div id="topicModeling"></div>
+
+        <h3>Sentiment Analysis</h3>
+        <div id="sentimentAnalysis"></div>
+
+        <h3>Named Entity Recognition (NER)</h3>
+        <div id="ner"></div>
+
+        <h3>Dependency Parsing</h3>
+        <div id="dependencyParsing"></div>
+
+        <h3>Text Classification</h3>
+        <div id="textClassification"></div>
+    </div>
+
+    <script>
+        function analyzeText() {
+            const text = $('#inputText').val();
+            if (text) {
+                // Perform the analyses (replace the URLs and logic with actual implementations)
+                
+                // Word Frequency Analysis
+                $.post('/word-frequency', { text: text }, function(data) {
+                    $('#wordFrequency').html(JSON.stringify(data));
+                });
+
+                // TF-IDF
+                $.post('/tfidf', { text: text }, function(data) {
+                    $('#tfidf').html(JSON.stringify(data));
+                });
+
+                // Topic Modeling
+                $.post('/topic-modeling', { text: text }, function(data) {
+                    $('#topicModeling').html(JSON.stringify(data));
+                });
+
+                // Sentiment Analysis
+                $.post('/sentiment-analysis', { text: text }, function(data) {
+                    $('#sentimentAnalysis').html(JSON.stringify(data));
+                });
+
+                // Named Entity Recognition (NER)
+                $.post('/ner', { text: text }, function(data) {
+                    $('#ner').html(JSON.stringify(data));
+                });
+
+                // Dependency Parsing
+                $.post('/dependency-parsing', { text: text }, function(data) {
+                    $('#dependencyParsing').html(JSON.stringify(data));
+                });
+
+                // Text Classification
+                $.post('/text-classification', { text: text }, function(data) {
+                    $('#textClassification').html(JSON.stringify(data));
+                });
+            } else {
+                alert('Please enter some text to analyze.');
+            }
+        }
+    </script>
+</body>
+</html>
